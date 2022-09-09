@@ -1,0 +1,65 @@
+<div>
+  <br><br><br><br><br>
+  <span class="help is-info"  *ngIf="isLoading==1">Loading...</span>
+  <form #form="ngForm" (submit)="findCompanies()">
+    <table class="table">
+      <tr>
+        <td>
+          <label style="color:black" for="date">date </label>
+        </td>
+        <td>
+          <input class="form-control placeholder-no-fix" type="date" name="date" id="date" [(ngModel)]="date" />
+        </td>
+        <td>
+          <label style="color:black" for="company">company</label>
+        </td>
+        <td>
+          <input class="form-control placeholder-no-fix" type="text" placeholder="company" name="company" id="company" [(ngModel)]="company" />
+        </td>
+        <td>
+          <input class="form-control placeholder-no-fix" type="submit" value="find" />
+        </td>
+      </tr>
+    </table>
+  </form>
+  <br><br><br>
+  <div *ngIf="isLoading==0">
+    <table class="table"  >
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Company</th>
+        </tr>
+      </thead>
+        <tbody>
+          <tr  *ngFor="let company of companies | paginate: { itemsPerPage : 10, currentPage: page }" >
+            <td>{{ company.id }}</td>
+            <td>{{ company.company }}</td>
+          </tr>
+        </tbody>
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </table>
+    <br><br><br>
+    <form>
+      <button class="button is-primary">Reload</button>
+    </form>
+  </div>
+  <div *ngIf="isLoading==2">
+    <table class="table"  >
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Company</th>
+        </tr>
+      </thead>
+        <tbody>
+          <tr *ngFor="let company of companies | paginate: { itemsPerPage : 10, currentPage: page }">
+            <td>{{ company.id }}</td>
+            <td>{{ company.company }}</td>
+          </tr>
+        </tbody>
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </table>
+    <br><br><br>
+  </div>
+</div>

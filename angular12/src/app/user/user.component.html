@@ -1,0 +1,66 @@
+<div>
+  <br><br><br><br><br>
+  <span class="help is-info"  *ngIf="isLoading">Loading...</span>
+  <table class="table">
+    <tr>
+      <td>
+        <label style="color:black" for="role">role </label>
+      </td>
+      <td>
+        <input class="form-control placeholder-no-fix" type="search" name="role" id="role" [(ngModel)]="role" />
+      </td>
+      <td>
+        <label style="color:black" for="profession">profession </label>
+      </td>
+      <td>
+        <input class="form-control placeholder-no-fix" type="search" name="profession" id="profession" [(ngModel)]="profession" />
+      </td>
+      <td>
+        <label style="color:black" for="division">division </label>
+      </td>
+      <td>
+        <input class="form-control placeholder-no-fix" type="search" name="division" id="division" [(ngModel)]="division" />
+      </td>
+    </tr>
+  </table>
+  <br><br><br>
+  <div class="container">
+    <div id="pdfTable" #pdfTable>
+      <h2>Search Result</h2><br>
+      <div *ngIf="!isLoading">
+        <table class="table"  >
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Profession</th>
+              <th>Division</th>
+              <th>Token</th>
+            </tr>
+          </thead>
+            <tbody>
+              <tr  *ngFor="let user of users | paginate: { itemsPerPage : 10, currentPage: page }" >
+
+                <td *ngIf="(user.role==role || !role) && (user.profession==profession || !profession) && (user.division==division || !division) ">{{ user.nom }}</td>
+                <td *ngIf="(user.role==role || !role) && (user.profession==profession || !profession) && (user.division==division || !division) ">{{ user.email }}</td>
+                <td *ngIf="(user.role==role || !role) && (user.profession==profession || !profession) && (user.division==division || !division) ">{{ user.role }}</td>
+                <td *ngIf="(user.role==role || !role) && (user.profession==profession || !profession) && (user.division==division || !division) ">{{ user.profession }}</td>
+                <td *ngIf="(user.role==role || !role) && (user.profession==profession || !profession) && (user.division==division || !division) ">{{ user.division }}</td>
+                <td *ngIf="(user.role==role || !role) && (user.profession==profession || !profession) && (user.division==division || !division) ">{{ user.token }}</td>
+              </tr>
+            </tbody>
+        </table>
+        <br><br><br>
+      </div>
+    </div>
+    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    <table class="table"  >
+      <tr>
+        <th><button class="button is-primary">Reload</button></th>
+        <th><button class="btn btn-primary" (click)="downloadAsPDF();">Export To PDF</button></th>
+      </tr>
+    </table>
+
+  </div>
+</div>
