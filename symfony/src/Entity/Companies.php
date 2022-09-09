@@ -5,15 +5,21 @@ namespace App\Entity;
 use App\Repository\CompaniesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CompaniesRepository::class)]
+/**
+ * @ORM\Entity(repositoryClass=CompaniesRepository::class)
+ */
 class Companies
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $company;
 
     public function getId(): ?int
@@ -26,7 +32,7 @@ class Companies
         return $this->company;
     }
 
-    public function setCompany(?string $company): self
+    public function setCompany(string $company): self
     {
         $this->company = $company;
 

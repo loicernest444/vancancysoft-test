@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @extends ServiceEntityRepository<Divisions>
+ *
  * @method Divisions|null find($id, $lockMode = null, $lockVersion = null)
  * @method Divisions|null findOneBy(array $criteria, array $orderBy = null)
  * @method Divisions[]    findAll()
@@ -19,32 +21,66 @@ class DivisionsRepository extends ServiceEntityRepository
         parent::__construct($registry, Divisions::class);
     }
 
-    // /**
-    //  * @return Divisions[] Returns an array of Divisions objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function add(Divisions $entity, bool $flush = false): void
     {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $this->getEntityManager()->persist($entity);
 
-    /*
-    public function findOneBySomeField($value): ?Divisions
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
-    */
+
+    public function remove(Divisions $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function transform(Divisions $division)
+    {
+        return [
+            'id'    => (int) $division->getId(),
+            'division' => (string) $division->getDivision(),
+        ];
+    }
+
+    public function transformAll()
+    {
+        $divisions = $this->findAll();
+        $divisionsArray = [];
+
+        foreach ($divisions as $division) {
+            $divisionsArray[] = $this->transform($division);
+        }
+
+        return $divisionsArray;
+    }
+
+//    /**
+//     * @return Divisions[] Returns an array of Divisions objects
+//     */
+//    public function findByExampleField($value): array
+//    {
+//        return $this->createQueryBuilder('d')
+//            ->andWhere('d.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->orderBy('d.id', 'ASC')
+//            ->setMaxResults(10)
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
+
+//    public function findOneBySomeField($value): ?Divisions
+//    {
+//        return $this->createQueryBuilder('d')
+//            ->andWhere('d.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->getQuery()
+//            ->getOneOrNullResult()
+//        ;
+//    }
 }

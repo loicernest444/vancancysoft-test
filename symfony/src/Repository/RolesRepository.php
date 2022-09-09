@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @extends ServiceEntityRepository<Roles>
+ *
  * @method Roles|null find($id, $lockMode = null, $lockVersion = null)
  * @method Roles|null findOneBy(array $criteria, array $orderBy = null)
  * @method Roles[]    findAll()
@@ -19,32 +21,66 @@ class RolesRepository extends ServiceEntityRepository
         parent::__construct($registry, Roles::class);
     }
 
-    // /**
-    //  * @return Roles[] Returns an array of Roles objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function add(Roles $entity, bool $flush = false): void
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $this->getEntityManager()->persist($entity);
 
-    /*
-    public function findOneBySomeField($value): ?Roles
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
-    */
+
+    public function remove(Roles $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function transform(Roles $role)
+    {
+        return [
+            'id'    => (int) $role->getId(),
+            'role' => (string) $role->getRole(),
+        ];
+    }
+
+    public function transformAll()
+    {
+        $roles = $this->findAll();
+        $roleesArray = [];
+
+        foreach ($roles as $role) {
+            $rolesArray[] = $this->transform($role);
+        }
+
+        return $rolesArray;
+    }
+
+//    /**
+//     * @return Roles[] Returns an array of Roles objects
+//     */
+//    public function findByExampleField($value): array
+//    {
+//        return $this->createQueryBuilder('r')
+//            ->andWhere('r.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->orderBy('r.id', 'ASC')
+//            ->setMaxResults(10)
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
+
+//    public function findOneBySomeField($value): ?Roles
+//    {
+//        return $this->createQueryBuilder('r')
+//            ->andWhere('r.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->getQuery()
+//            ->getOneOrNullResult()
+//        ;
+//    }
 }

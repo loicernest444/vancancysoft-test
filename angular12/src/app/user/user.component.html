@@ -1,53 +1,85 @@
 <div>
   <br><br><br><br><br>
   <span class="help is-info"  *ngIf="isLoading">Loading...</span>
+
+  <form #form="ngForm" (submit)="findJobs()">
+    <table class="table">
+      <tr>
+        <td>
+          <label style="color:black" for="date">start date </label>
+        </td>
+        <td>
+          <input class="form-control placeholder-no-fix" type="date" name="debut" id="date" [(ngModel)]="debut" />
+        </td>
+        <td>
+          <label style="color:black" for="date1">end date </label>
+        </td>
+        <td>
+          <input class="form-control placeholder-no-fix" type="date" name="fin" id="date1" [(ngModel)]="fin" />
+        </td>
+        <td>
+          <input class="form-control placeholder-no-fix" type="submit" value="find" />
+        </td>
+      </tr>
+    </table>
+  </form>
+
+
   <table class="table">
     <tr>
       <td>
         <label style="color:black" for="role">role </label>
       </td>
       <td>
-        <input class="form-control placeholder-no-fix" type="search" name="role" id="role" [(ngModel)]="role" />
+        <select name="role" id="role" class="form-control" [(ngModel)]="role">
+          <option *ngFor="let item of roles" value="{{ item.id }}" >{{ item.role }}</option>
+        </select>
       </td>
       <td>
         <label style="color:black" for="profession">profession </label>
       </td>
       <td>
-        <input class="form-control placeholder-no-fix" type="search" name="profession" id="profession" [(ngModel)]="profession" />
+        <select name="profession" id="profession" class="form-control" [(ngModel)]="profession">
+          <option *ngFor="let item of professions" value="{{ item.id }}" >{{ item.profession }}</option>
+        </select>
       </td>
       <td>
         <label style="color:black" for="division">division </label>
       </td>
       <td>
-        <input class="form-control placeholder-no-fix" type="search" name="division" id="division" [(ngModel)]="division" />
+        <select name="division" id="division" class="form-control" [(ngModel)]="division">
+          <option *ngFor="let item of divisions" value="{{ item.id }}" >{{ item.division }}</option>
+        </select>
+      </td>
+      <td>
+        <label style="color:black" for="company">company </label>
+      </td>
+      <td>
+        <select name="company" id="company" class="form-control" [(ngModel)]="company">
+          <option *ngFor="let item of companies" value="{{ item.id }}" >{{ item.company }}</option>
+        </select>
       </td>
     </tr>
   </table>
   <br><br><br>
-  <div class="container">
+  <div class="container" *ngIf="!isLoading">
     <div id="pdfTable" #pdfTable>
       <h2>Search Result</h2><br>
-      <div *ngIf="!isLoading">
+      <div>
         <table class="table"  >
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Profession</th>
-              <th>Division</th>
-              <th>Token</th>
+              <th>ref job</th>
+              <th>link</th>
+              <th>date</th>
             </tr>
           </thead>
             <tbody>
-              <tr  *ngFor="let user of users | paginate: { itemsPerPage : 10, currentPage: page }" >
+              <tr  *ngFor="let item of jobs | paginate: { itemsPerPage : 10, currentPage: page }" >
 
-                <td *ngIf="(user.role==role || !role) && (user.profession==profession || !profession) && (user.division==division || !division) ">{{ user.nom }}</td>
-                <td *ngIf="(user.role==role || !role) && (user.profession==profession || !profession) && (user.division==division || !division) ">{{ user.email }}</td>
-                <td *ngIf="(user.role==role || !role) && (user.profession==profession || !profession) && (user.division==division || !division) ">{{ user.role }}</td>
-                <td *ngIf="(user.role==role || !role) && (user.profession==profession || !profession) && (user.division==division || !division) ">{{ user.profession }}</td>
-                <td *ngIf="(user.role==role || !role) && (user.profession==profession || !profession) && (user.division==division || !division) ">{{ user.division }}</td>
-                <td *ngIf="(user.role==role || !role) && (user.profession==profession || !profession) && (user.division==division || !division) ">{{ user.token }}</td>
+                <td *ngIf="item.company_id==company && item.division_id==division && item.profession_id==profession && item.role_id==role">{{ item.job_ref }}</td>
+                <td *ngIf="item.company_id==company && item.division_id==division && item.profession_id==profession && item.role_id==role"><a href="{{ item.link }}">check</a></td>
+                <td *ngIf="item.company_id==company && item.division_id==division && item.profession_id==profession && item.role_id==role">{{ item.date_published }}</td>
               </tr>
             </tbody>
         </table>

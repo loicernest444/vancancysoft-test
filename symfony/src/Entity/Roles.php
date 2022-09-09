@@ -5,15 +5,21 @@ namespace App\Entity;
 use App\Repository\RolesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: RolesRepository::class)]
+/**
+ * @ORM\Entity(repositoryClass=RolesRepository::class)
+ */
 class Roles
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $role;
 
     public function getId(): ?int
